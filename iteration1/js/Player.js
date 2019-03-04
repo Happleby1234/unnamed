@@ -5,7 +5,7 @@ class Player {
             .sprite(0, 0, "player", 0)
             .setBody({
                 type: "circle",
-                radius: 14
+                radius: 6
             })
             .setScale(2)
             .setFixedRotation()
@@ -23,6 +23,7 @@ class Player {
         update() {
             if (Phaser.Input.Keyboard.JustDown(this.keys.right)) {
                 this.moveRight = true;
+
             } else if (Phaser.Input.Keyboard.JustDown(this.keys.left)) {
                 this.moveLeft = true;
             }
@@ -31,6 +32,7 @@ class Player {
             }
 
             if (this.moveRight) {
+
                 this.sprite.applyForce({
                     x: this.xForce,
                     y: 0
