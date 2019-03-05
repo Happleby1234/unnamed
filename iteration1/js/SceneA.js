@@ -1,6 +1,6 @@
 class SceneA extends BaseScene {
     constructor(){
-      super('level1');
+      super('SceneA');
       this.tileDataKey = 'castle';
       this.tileDataSource = 'assets/level1.json';
     }
@@ -22,7 +22,10 @@ class SceneA extends BaseScene {
     }
 
     create() {
-      super.create();
+        super.create();
+        this.keys = this.input.keyboard.addKeys({
+            space: Phaser.Input.Keyboard.KeyCodes.SPACE
+        });
 
     }
 

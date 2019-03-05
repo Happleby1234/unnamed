@@ -30,33 +30,37 @@ class Player {
             if (Phaser.Input.Keyboard.JustDown(this.keys.up)) {
                 this.jumpUp = true;
             }
+            const xForce = 0.03;
+            const yForce = 0.01;
 
             if (this.moveRight) {
-
                 this.sprite.applyForce({
-                    x: this.xForce,
+                    x: xForce,
                     y: 0
                 });
             } else if (this.moveLeft) {
                 this.sprite.applyForce({
-                    x: -this.xForce,
+                    x: -xForce,
                     y: 0
                 });
             }
             if (this.jumpUp) {
                 this.sprite.applyForce({
                     x: 0,
-                    y: -this.yForce
+                    y: -yForce
                 });
             }
             // clamp velocity
-            const clamp = 5;
+            const clamp = 0.1;
             if (this.sprite.body.velocity.x > clamp) {
                 this.sprite.setVelocityX(clamp);
             } else if (this.sprite.body.velocity.x < -clamp) {
                 this.sprite.setVelocityX(-clamp);
             }
             this.moveLeft = this.moveRight = this.jumpUp = false;
-        }
-    
+    }
+    freeze() {
+        this.sprite.setStatic(true);
+    }
+    destroy() {}
 }
