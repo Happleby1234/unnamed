@@ -1,8 +1,8 @@
 class SceneB extends BaseScene {
-    constructor(){
-      super('SceneB');
-      this.tileDataKey = 'castle2';
-      this.tileDataSource = 'assets/level2castle.json';
+    constructor() {
+        super('SceneB');
+        this.tileDataKey = 'castle2';
+        this.tileDataSource = 'assets/level2castle.json';
     }
 
     preload() {
@@ -14,10 +14,21 @@ class SceneB extends BaseScene {
         this.keys = this.input.keyboard.addKeys({
             space: Phaser.Input.Keyboard.KeyCodes.SPACE
         });
+        this.player = new Player(this, 90, 980);
+        this.player.sprite.label = 'player'
+
+
+        this.exit = this.matter.add.sprite(275, 60, 'exit');
+        this.exit.setStatic(true);
+        this.exit.label = 'exit';
+
+
+
+        this.cameras.main.startFollow(this.player.sprite, false, 0.5, 0.5);
 
     }
 
     update(time, delta) {
-      super.update(time, delta)
+        super.update(time, delta)
     }
 }

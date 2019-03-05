@@ -34,6 +34,7 @@ class Player {
             const yForce = 0.01;
 
             if (this.moveRight) {
+                Player.anims.play('walk',true);
                 this.sprite.applyForce({
                     x: xForce,
                     y: 0
@@ -62,5 +63,17 @@ class Player {
     freeze() {
         this.sprite.setStatic(true);
     }
-    destroy() {}
+
+
+    //***ANIMATION***//
+    createPlayerAnimations() {
+        this.anims.create({
+            key: 'walk',
+            frames: this.anims.generateFrameNumbers('player', { frames: [1, 4] }),
+            frameRate: 3,
+            repeat: -1
+        });
+    }
+    destroy() { }
+
 }

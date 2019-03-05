@@ -7,9 +7,7 @@ class SceneA extends BaseScene {
 
     preload() {
         super.preload();
-        this.load.image('castle_tileset_part1', 'assets/castle_tileset_part1.png');
-        this.load.image('castle_tileset_part2', 'assets/castle_tileset_part2.png');
-        this.load.image('castle_tileset_part3', 'assets/castle_tileset_part3.png');
+
         this.load.spritesheet(
             'player',
             'assets/player.png', {
@@ -26,7 +24,12 @@ class SceneA extends BaseScene {
         this.keys = this.input.keyboard.addKeys({
             space: Phaser.Input.Keyboard.KeyCodes.SPACE
         });
+        this.player = new Player(this, 200, 128);
+        this.player.sprite.label = 'player'
 
+        this.exit = this.matter.add.sprite(450, 45, 'exit');
+        this.exit.setStatic(true);
+        this.exit.label = 'exit';
     }
 
     update(time, delta) {
