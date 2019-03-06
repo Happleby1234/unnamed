@@ -1,20 +1,18 @@
 class SceneA extends BaseScene {
     constructor(){
-      super('level1');
-      this.tileDataKey = 'level1';
+      super('SceneA');
+      this.tileDataKey = 'castle';
       this.tileDataSource = 'assets/level1.json';
     }
 
     preload() {
         super.preload();
-        this.load.image('walls', 'assets/castle_tileset_part1.png');
-        this.load.image('walls2', 'assets/castle_tileset_part2.png');
-        this.load.image('walls3', 'assets/castle_tileset_part3.png');
+
         this.load.spritesheet(
             'player',
-            'assets/player1.png', {
-                frameWidth: 32,
-                frameHeight: 32,
+            'assets/player.png', {
+                frameWidth: 15,
+                frameHeight: 15,
                 margin: 1,
                 spacing: 2
             }
@@ -22,7 +20,16 @@ class SceneA extends BaseScene {
     }
 
     create() {
-      super.create();
+        super.create();
+        this.keys = this.input.keyboard.addKeys({
+            space: Phaser.Input.Keyboard.KeyCodes.SPACE
+        });
+        this.player = new Player(this, 200, 128);
+        this.player.sprite.label = 'player'
+
+        this.exit = this.matter.add.sprite(450, 45, 'exit');
+        this.exit.setStatic(true);
+        this.exit.label = 'exit';
 
     }
 

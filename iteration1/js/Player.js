@@ -5,7 +5,7 @@ class Player {
             .sprite(0, 0, "player", 0)
             .setBody({
                 type: "circle",
-                radius: 14
+                radius: 6
             })
             .setScale(2)
             .setFixedRotation()
@@ -21,40 +21,60 @@ class Player {
         });
     }
         update() {
-            if (Phaser.Input.Keyboard.JustDown(this.keys.right)) {
+            if (this.keys.right.isDown) {
                 this.moveRight = true;
-            } else if (Phaser.Input.Keyboard.JustDown(this.keys.left)) {
+                
+
+            } else if (this.keys.left.isDown) {
                 this.moveLeft = true;
             }
             if (Phaser.Input.Keyboard.JustDown(this.keys.up)) {
                 this.jumpUp = true;
             }
+            const xForce = 0.003;
+            const yForce = 0.011;
 
             if (this.moveRight) {
+              //Player.anims.play('walk');
                 this.sprite.applyForce({
-                    x: this.xForce,
+                    x: xForce,
                     y: 0
                 });
             } else if (this.moveLeft) {
                 this.sprite.applyForce({
-                    x: -this.xForce,
+                    x: -xForce,
                     y: 0
                 });
             }
             if (this.jumpUp) {
                 this.sprite.applyForce({
                     x: 0,
-                    y: -this.yForce
+                    y: -yForce
                 });
             }
             // clamp velocity
-            const clamp = 5;
+            const clamp = 0.1;
             if (this.sprite.body.velocity.x > clamp) {
                 this.sprite.setVelocityX(clamp);
             } else if (this.sprite.body.velocity.x < -clamp) {
                 this.sprite.setVelocityX(-clamp);
             }
             this.moveLeft = this.moveRight = this.jumpUp = false;
-        }
-    
+    }
+    freeze() {
+        this.sprite.setStatic(true);
+    }
+
+
+    //***ANIMATION***//
+    createPlayerAnimations() {
+        this.anims.create({
+            key: 'walk',
+            frames: this.anims.generateFrameNumbers('player', { start:1,end: 4}),
+            frameRate: 3,
+            repeat: -1
+        });
+    }
+    destroy() { }
+
 }
