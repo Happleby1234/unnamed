@@ -112,13 +112,17 @@ class BaseScene extends Phaser.Scene {
         }
     }
     makeBarrel() {
-        let barrel = this.matter.add.image(150, 32, 'barrel', { restitution: 1, friction: 0.5, density: 0.01, shape: 'circle' });
-        barrel.setScale(1);
+        let barrel = this.matter.add.image(150, 32, 'barrel', { restitution: 1, friction: 0.5, density: 0.01 });
+        //barrel.setScale(1);
+        barrel.setBody({
+            type: 'circle',
+            radius: 10
+        });
     }
     createPlayerAnimations() {
         this.anims.create({
             key: 'walk',
-            frames: this.anims.generateFrameNumbers('player', { frames: [1, 4] }),
+            frames: this.anims.generateFrameNumbers('player', { frames: [0, 4] }),
             frameRate: 3,
             repeat: -1
         });

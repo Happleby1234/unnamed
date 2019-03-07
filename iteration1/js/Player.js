@@ -22,12 +22,16 @@ class Player {
     }
         update() {
             if (this.keys.right.isDown) {
+                this.sprite.anims.play('walk');
+                this.sprite.flipX = false;
                 this.moveRight = true;
-                
+
 
             } else if (this.keys.left.isDown) {
+                this.sprite.flipX = true;
                 this.moveLeft = true;
-            }
+            } 
+
             if (Phaser.Input.Keyboard.JustDown(this.keys.up)) {
                 this.jumpUp = true;
             }
@@ -35,16 +39,23 @@ class Player {
             const yForce = 0.011;
 
             if (this.moveRight) {
-              //Player.anims.play('walk');
+
                 this.sprite.applyForce({
                     x: xForce,
                     y: 0
                 });
             } else if (this.moveLeft) {
+                
                 this.sprite.applyForce({
                     x: -xForce,
                     y: 0
                 });
+            } else {
+                //this.sprite.anims.play("idle", true);
+                this.sprite.applyForce({
+                    x: 0,
+                    y: 0
+                })
             }
             if (this.jumpUp) {
                 this.sprite.applyForce({
@@ -52,6 +63,7 @@ class Player {
                     y: -yForce
                 });
             }
+            
             // clamp velocity
             const clamp = 0.1;
             if (this.sprite.body.velocity.x > clamp) {
@@ -70,8 +82,14 @@ class Player {
     createPlayerAnimations() {
         this.anims.create({
             key: 'walk',
-            frames: this.anims.generateFrameNumbers('player', { start:1,end: 4}),
-            frameRate: 3,
+            frames: this.anims.generateFrameNumbers('player', { start:0,end: 15}),
+            frameRate: 15,
+            repeat: 1
+        });
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('player', { start: 11, end: 15 }),
+            frameRate: 15,
             repeat: -1
         });
     }
