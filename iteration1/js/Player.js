@@ -19,38 +19,81 @@ class Player {
             down: Phaser.Input.Keyboard.KeyCodes.S,
             right: Phaser.Input.Keyboard.KeyCodes.D
         });
+        //touchscreen stuff
+        this.scene.input.on('pointerdown', this.handlePointerDown, this);
+        this.scene.input.on('pointerUp', this.handlePointerUp, this);
+        this.isTouching = false;
+        this.touchData = {};
+    }
+    handlePointerDown(pointer) {
+        this.touchData.startX = pointer.x;
+        this.touchData.startY = pointer.Y;
+    }
+    handlePointerUp(pointer) {
+        this.touchData.endX = pointer.x;
+        this.touchData.endY = pointer.y;
+        this.handleTouch();
+    }
+    handleTouch() {
+        const distX = this.touchData.endX - this.touchData.startX;
+        const distY = this.touchData.endY - this.touchData.startY;
+        this.touchData = {};
+        const tolerance = 5;
+        if (distX > 0 + tolerance) {
+            this.moveRight = true;
+        } else if (distX < 0 - tolerance) {
+            this.moveLeft = true;
+        }
+        if (distY < 0 - tolerance) {
+            this.jumpUp = true;
+        }
     }
         update() {
-            if (Phaser.Input.Keyboard.JustDown(this.keys.right)) {
+            if (this.keys.right.isDown) {
+                
+                this.sprite.flipX = false;
                 this.moveRight = true;
 
-            } else if (Phaser.Input.Keyboard.JustDown(this.keys.left)) {
+
+            } else if (this.keys.left.isDown) {
+
+                this.sprite.flipX = true;
                 this.moveLeft = true;
-            }
+            } 
+
             if (Phaser.Input.Keyboard.JustDown(this.keys.up)) {
                 this.jumpUp = true;
             }
-            const xForce = 0.03;
-            const yForce = 0.01;
+            const xForce = 0.003;
+            const yForce = 0.011;
 
             if (this.moveRight) {
-                Player.anims.play('walk',true);
+                this.sprite.anims.play('walk', true);
                 this.sprite.applyForce({
                     x: xForce,
                     y: 0
                 });
             } else if (this.moveLeft) {
+                this.sprite.anims.play('walk', true)
                 this.sprite.applyForce({
                     x: -xForce,
                     y: 0
                 });
+            } else {
+                this.sprite.anims.play("idle",true);
+                this.sprite.applyForce({
+                    x: 0,
+                    y: 0
+                })
             }
             if (this.jumpUp) {
+                this.sprite.anims.play("jump", true)
                 this.sprite.applyForce({
                     x: 0,
                     y: -yForce
                 });
             }
+            
             // clamp velocity
             const clamp = 0.1;
             if (this.sprite.body.velocity.x > clamp) {
@@ -66,14 +109,7 @@ class Player {
 
 
     //***ANIMATION***//
-    createPlayerAnimations() {
-        this.anims.create({
-            key: 'walk',
-            frames: this.anims.generateFrameNumbers('player', { frames: [1, 4] }),
-            frameRate: 3,
-            repeat: -1
-        });
-    }
+
     destroy() { }
 
 }

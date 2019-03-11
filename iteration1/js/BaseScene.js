@@ -4,6 +4,8 @@ class BaseScene extends Phaser.Scene {
         this.id = id;
         this.tileDataKey;
         this.tileDataSource;
+        this.barrelCount = 0;
+        this.barrelTime = 0;
     }
     preload() {
         this.load.tilemapTiledJSON(this.tileDataKey, this.tileDataSource);
@@ -11,6 +13,7 @@ class BaseScene extends Phaser.Scene {
         this.load.image('castle_tileset_part2', 'assets/castle_tileset_part2.png');
         this.load.image('castle_tileset_part3', 'assets/castle_tileset_part3.png');
         this.load.image('exit', 'assets/donkeybrad.png');
+        this.load.image('barrel', 'assets/barrel.png');
     }
     create() {
         //load level
@@ -28,13 +31,12 @@ class BaseScene extends Phaser.Scene {
 
         const myLand = this.matter.world.convertTilemapLayer(this.land);
 
-
-
+        this.createPlayerAnimations();
 
 
         this.cameras.main.setBounds(0, 0, map.widthInpixels, map.heightInPixels);
         this.matter.world.setBounds(0, 0, map.widthInpixels, map.heightInPixels);
-        //this.cameras.main.startFollow(this.player.sprite, false, 0.5, 0.5);
+
         this.matter.world.on('collisionstart', this.handleCollision, this);
         this.matter.world.on('collisionactive', this.handleCollision, this);
 
@@ -49,6 +51,14 @@ class BaseScene extends Phaser.Scene {
                     this.scene.switch('sceneA');
                     break;
             }
+        }
+
+        if (this.barrelCount < 20 && this.barrelTime == 0) {
+            this.makeBarrel();
+            this.barrelCount++;
+            this.barrelTime = time;
+        } else if (time > this.barrelTime + 5000) {
+            this.barrelTime = 0;
         }
 
         this.player.update();
@@ -77,6 +87,9 @@ class BaseScene extends Phaser.Scene {
 
     changeScene() {
         switch (this.id) {
+            case 'MainMenu':
+                this.scene.start('sceneA');
+                break
             case 'SceneA':
                 this.scene.start('SceneB');
                 break
@@ -96,4 +109,27 @@ class BaseScene extends Phaser.Scene {
                 break
         }
     }
+
+    createPlayerAnimations() {
+        this.anims.create({
+            key: 'walk',
+            frames: this.anims.generateFrameNumbers('player', { frames: [0, 3] }),
+            frameRate: 6,
+            repeat: 1
+        }),
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('player', { frames: [13, 15] }),
+            frameRate: 2,
+            repeat: -1
+            }),
+        this.anims.create({
+            key: 'Jump',
+            frames: this.anims.generateFrameNumbers('player', { frames: [8, 9] }),
+            frameRate: 15,
+            repeat: -1
+        })
+    }
+    
+
 }
