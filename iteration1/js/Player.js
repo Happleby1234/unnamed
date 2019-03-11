@@ -21,17 +21,17 @@ class Player {
         });
         //touchscreen stuff
         this.scene.input.on('pointerdown', this.handlePointerDown, this);
-        this.scene.input.on('pointerUp', this.handlePointerUp, this);
+        this.scene.input.on('pointerup', this.handlePointerUp, this);
         this.isTouching = false;
         this.touchData = {};
     }
     handlePointerDown(pointer) {
-        this.touchData.startX = pointer.x;
+        this.touchData.startX = pointer.X;
         this.touchData.startY = pointer.Y;
     }
     handlePointerUp(pointer) {
-        this.touchData.endX = pointer.x;
-        this.touchData.endY = pointer.y;
+        this.touchData.endX = pointer.X;
+        this.touchData.endY = pointer.Y;
         this.handleTouch();
     }
     handleTouch() {

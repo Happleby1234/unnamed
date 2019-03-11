@@ -22,9 +22,6 @@ class SceneA extends BaseScene {
 
     create() {
         super.create();
-        this.keys = this.input.keyboard.addKeys({
-            space: Phaser.Input.Keyboard.KeyCodes.SPACE
-        });
         this.player = new Player(this, 200, 500);
         this.player.sprite.label = 'player'
 
