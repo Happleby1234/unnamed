@@ -53,18 +53,13 @@ class BaseScene extends Phaser.Scene {
             }
         }
 
-
         if (this.barrelCount < 20 && this.barrelTime == 0) {
             this.makeBarrel();
             this.barrelCount++;
             this.barrelTime = time;
-        } else if (time > this.barrelTime + 20000) {
+        } else if (time > this.barrelTime + 5000) {
             this.barrelTime = 0;
         }
-
-
-
-
 
         this.player.update();
     }
@@ -111,20 +106,27 @@ class BaseScene extends Phaser.Scene {
                 break
         }
     }
-    makeBarrel() {
-        let barrel = this.matter.add.image(150, 32, 'barrel', { restitution: 1, friction: 0.5, density: 0.01 });
-        //barrel.setScale(1);
-        barrel.setBody({
-            type: 'circle',
-            radius: 10
-        });
-    }
+
     createPlayerAnimations() {
         this.anims.create({
             key: 'walk',
-            frames: this.anims.generateFrameNumbers('player', { frames: [0, 4] }),
-            frameRate: 3,
+            frames: this.anims.generateFrameNumbers('player', { frames: [0, 3] }),
+            frameRate: 6,
+            repeat: 1
+        }),
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('player', { frames: [13, 15] }),
+            frameRate: 2,
             repeat: -1
-        });
+            }),
+        this.anims.create({
+            key: 'Jump',
+            frames: this.anims.generateFrameNumbers('player', { frames: [8, 9] }),
+            frameRate: 15,
+            repeat: -1
+        })
     }
+    
+
 }

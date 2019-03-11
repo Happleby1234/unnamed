@@ -11,8 +11,8 @@ class SceneA extends BaseScene {
         this.load.spritesheet(
             'player',
             'assets/player.png', {
-                frameWidth: 15,
-                frameHeight: 15,
+                frameWidth: 14,
+                frameHeight: 14,
                 margin: 1,
                 spacing: 2
             }
@@ -24,7 +24,7 @@ class SceneA extends BaseScene {
         this.keys = this.input.keyboard.addKeys({
             space: Phaser.Input.Keyboard.KeyCodes.SPACE
         });
-        this.player = new Player(this, 200, 128);
+        this.player = new Player(this, 200, 500);
         this.player.sprite.label = 'player'
 
         this.exit = this.matter.add.sprite(450, 45, 'exit');
@@ -35,5 +35,13 @@ class SceneA extends BaseScene {
 
     update(time, delta) {
       super.update(time, delta);
+    }
+    makeBarrel() {
+        let barrel = this.matter.add.image(400, 32, 'barrel', { restitution: 1, friction: 0.5, density: 0.01 });
+        //barrel.setScale(1);
+        barrel.setBody({
+            type: 'circle',
+            radius: 10
+        });
     }
 }
