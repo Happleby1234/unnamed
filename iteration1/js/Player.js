@@ -24,14 +24,16 @@ class Player {
         this.scene.input.on('pointerup', this.handlePointerUp, this);
         this.isTouching = false;
         this.touchData = {};
+
+        console.log(this);
     }
     handlePointerDown(pointer) {
-        this.touchData.startX = pointer.X;
-        this.touchData.startY = pointer.Y;
+        this.touchData.startX = pointer.x;
+        this.touchData.startY = pointer.y;
     }
     handlePointerUp(pointer) {
-        this.touchData.endX = pointer.X;
-        this.touchData.endY = pointer.Y;
+        this.touchData.endX = pointer.x;
+        this.touchData.endY = pointer.y;
         this.handleTouch();
     }
     handleTouch() {
@@ -43,8 +45,7 @@ class Player {
             this.moveRight = true;
         } else if (distX < 0 - tolerance) {
             this.moveLeft = true;
-        }
-        if (distY < 0 - tolerance) {
+        } else if (Math.abs(distX) < tolerance && Math.abs(distY) < tolerance) {
             this.jumpUp = true;
         }
     }
@@ -64,17 +65,15 @@ class Player {
             if (Phaser.Input.Keyboard.JustDown(this.keys.up)) {
                 this.jumpUp = true;
             }
-            const xForce = 0.003;
+            const xForce = 0.013;
             const yForce = 0.011;
 
             if (this.moveRight) {
-                this.sprite.anims.play('walk', true);
                 this.sprite.applyForce({
                     x: xForce,
-                    y: 0
+                    y: 0.001
                 });
             } else if (this.moveLeft) {
-                this.sprite.anims.play('walk', true)
                 this.sprite.applyForce({
                     x: -xForce,
                     y: 0
@@ -95,13 +94,21 @@ class Player {
             }
             
             // clamp velocity
-            const clamp = 0.1;
+            const clamp = 10;
             if (this.sprite.body.velocity.x > clamp) {
                 this.sprite.setVelocityX(clamp);
             } else if (this.sprite.body.velocity.x < -clamp) {
                 this.sprite.setVelocityX(-clamp);
             }
             this.moveLeft = this.moveRight = this.jumpUp = false;
+
+            if (this.sprite.body.velocity.x > 0) {
+                this.sprite.anims.play('walk', true);
+                this.sprite.flipX = false;
+            } else if (this.sprite.body.velocity.x < 0) {
+                this.sprite.anims.play('walk', true);
+                this.sprite.flipX = true;
+            }
     }
     freeze() {
         this.sprite.setStatic(true);

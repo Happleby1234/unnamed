@@ -39,19 +39,9 @@ class BaseScene extends Phaser.Scene {
 
         this.matter.world.on('collisionstart', this.handleCollision, this);
         this.matter.world.on('collisionactive', this.handleCollision, this);
-
+        console.log(this);
     }
     update(time, delta) {
-        if (Phaser.Input.Keyboard.JustDown(this.keys.space)) {
-            switch (this.id) {
-                case 'SceneA':
-                    this.scene.switch('sceneB');
-                    break;
-                case 'SceneB':
-                    this.scene.switch('sceneA');
-                    break;
-            }
-        }
 
         if (this.barrelCount < 20 && this.barrelTime == 0) {
             this.makeBarrel();
