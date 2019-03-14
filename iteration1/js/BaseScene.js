@@ -14,6 +14,15 @@ class BaseScene extends Phaser.Scene {
         this.load.image('castle_tileset_part3', 'assets/castle_tileset_part3.png');
         this.load.image('exit', 'assets/donkeybrad.png');
         this.load.image('barrel', 'assets/barrel.png');
+        this.load.spritesheet(
+            'powerup',
+            'assets/powerup.png', {
+                frameWidth: 14,
+                frameHeight: 14,
+                margin: 1,
+                spacing: 2
+            }
+        );
     }
     create() {
         //load level
@@ -32,26 +41,16 @@ class BaseScene extends Phaser.Scene {
         const myLand = this.matter.world.convertTilemapLayer(this.land);
 
         this.createPlayerAnimations();
-
+        this.createsensors(this, 450, 400);
 
         this.cameras.main.setBounds(0, 0, map.widthInpixels, map.heightInPixels);
         this.matter.world.setBounds(0, 0, map.widthInpixels, map.heightInPixels);
 
         this.matter.world.on('collisionstart', this.handleCollision, this);
         this.matter.world.on('collisionactive', this.handleCollision, this);
-
+        //console.log(this);
     }
     update(time, delta) {
-        if (Phaser.Input.Keyboard.JustDown(this.keys.space)) {
-            switch (this.id) {
-                case 'SceneA':
-                    this.scene.switch('sceneB');
-                    break;
-                case 'SceneB':
-                    this.scene.switch('sceneA');
-                    break;
-            }
-        }
 
         if (this.barrelCount < 20 && this.barrelTime == 0) {
             this.makeBarrel();
@@ -87,6 +86,9 @@ class BaseScene extends Phaser.Scene {
 
     changeScene() {
         switch (this.id) {
+            case 'MainMenu':
+                this.scene.start('sceneA');
+                break
             case 'SceneA':
                 this.scene.start('SceneB');
                 break
@@ -127,6 +129,22 @@ class BaseScene extends Phaser.Scene {
             repeat: -1
         })
     }
-    
+   
+    createsensors() {
+        this.powerup = new Powerup(this, 450, 400);
+        this.powerup.sprite.label = 'powerup';
+        const Bodies = Phaser.Physics.Matter.Matter.Bodies;
+        const { width: w, height: h, x: x, y: y } = this.powerup;
+
+        this.powerup.sensors = {
+            left: Bodies.rectangle(x - w + 7, y, 4, 2, { isSensor: true }),
+            right: Bodies.rectangle(x + w - 7, y, 4, 2, { isSensor: true })
+        }
+        const compoundBody = Phaser.Physics.Matter.Matter.Body.create({
+            parts: [this.powerup.sprite.body, this.powerup.sensors.left, this.powerup.sensors.right],
+            friction: 0.001
+        });
+        this.powerup.sprite.setExistingBody(compoundBody);
+    }
 
 }

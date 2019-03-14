@@ -2,7 +2,8 @@ class SceneA extends BaseScene {
     constructor(){
       super('SceneA');
       this.tileDataKey = 'castle';
-      this.tileDataSource = 'assets/level1.json';
+        this.tileDataSource = 'assets/level1.json';
+        var button
     }
 
     preload() {
@@ -21,9 +22,6 @@ class SceneA extends BaseScene {
 
     create() {
         super.create();
-        this.keys = this.input.keyboard.addKeys({
-            space: Phaser.Input.Keyboard.KeyCodes.SPACE
-        });
         this.player = new Player(this, 200, 500);
         this.player.sprite.label = 'player'
 
@@ -36,6 +34,8 @@ class SceneA extends BaseScene {
     update(time, delta) {
       super.update(time, delta);
     }
+    
+
     makeBarrel() {
         let barrel = this.matter.add.image(400, 32, 'barrel', { restitution: 1, friction: 0.5, density: 0.01 });
         //barrel.setScale(1);
@@ -44,4 +44,5 @@ class SceneA extends BaseScene {
             radius: 10
         });
     }
+
 }

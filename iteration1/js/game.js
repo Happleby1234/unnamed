@@ -7,7 +7,7 @@ var config = {
     physics: {
         default: 'matter',
         matter: {
-            debug: false,
+            debug: true,
             gravity: {
                 x: 0,
                 y: 1.5
@@ -23,8 +23,7 @@ var config = {
         }]
     },
     
-    scene: [SceneA, SceneB]
+    scene: [MainMenu,SceneA, SceneB]
 };
 
 var game = new Phaser.Game(config);
-var fullScreenFunction = null;
