@@ -29,11 +29,15 @@ class SceneA extends BaseScene {
         this.exit.setStatic(true);
         this.exit.label = 'exit';
 
+        this.powerup = new Powerup(this, 450, 400);
+        this.powerup.sprite.label = 'powerup';
+
     }
 
     update(time, delta) {
       super.update(time, delta);
     }
+
     makeBarrel() {
         let barrel = this.matter.add.image(400, 32, 'barrel', { restitution: 1, friction: 0.5, density: 0.01 });
         //barrel.setScale(1);

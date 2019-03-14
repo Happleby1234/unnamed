@@ -12,7 +12,6 @@ class Player {
             .setPosition(x, y)
             .setBounce(0.01)
             .setFriction(0.001);
-
         this.keys = this.scene.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,
             left: Phaser.Input.Keyboard.KeyCodes.A,
@@ -110,6 +109,7 @@ class Player {
                 this.sprite.flipX = true;
             }
     }
+
     freeze() {
         this.sprite.setStatic(true);
     }

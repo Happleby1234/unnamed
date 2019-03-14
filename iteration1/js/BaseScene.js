@@ -14,6 +14,7 @@ class BaseScene extends Phaser.Scene {
         this.load.image('castle_tileset_part3', 'assets/castle_tileset_part3.png');
         this.load.image('exit', 'assets/donkeybrad.png');
         this.load.image('barrel', 'assets/barrel.png');
+        this.load.image('powerup', 'assets/powerup.png');
     }
     create() {
         //load level
