@@ -14,15 +14,7 @@ class BaseScene extends Phaser.Scene {
         this.load.image('castle_tileset_part3', 'assets/castle_tileset_part3.png');
         this.load.image('exit', 'assets/donkeybrad.png');
         this.load.image('barrel', 'assets/barrel.png');
-        this.load.spritesheet(
-            'powerup',
-            'assets/powerup.png', {
-                frameWidth: 14,
-                frameHeight: 14,
-                margin: 1,
-                spacing: 2
-            }
-        );
+        this.load.image('Powerup', 'assets/powerup.png');
     }
     create() {
         //load level
@@ -39,9 +31,9 @@ class BaseScene extends Phaser.Scene {
         this.land.setCollisionByProperty({ collides: true });
 
         const myLand = this.matter.world.convertTilemapLayer(this.land);
-
         this.createPlayerAnimations();
-        this.createsensors(this, 450, 400);
+        this.powerup();
+        this.powerup = new Powerup(this, 450, 400);
 
         this.cameras.main.setBounds(0, 0, map.widthInpixels, map.heightInPixels);
         this.matter.world.setBounds(0, 0, map.widthInpixels, map.heightInPixels);
@@ -116,35 +108,32 @@ class BaseScene extends Phaser.Scene {
             frameRate: 6,
             repeat: 1
         }),
-        this.anims.create({
-            key: 'idle',
-            frames: this.anims.generateFrameNumbers('player', { frames: [13, 15] }),
-            frameRate: 2,
-            repeat: -1
+            this.anims.create({
+                key: 'idle',
+                frames: this.anims.generateFrameNumbers('player', { frames: [13, 15] }),
+                frameRate: 2,
+                repeat: -1
             }),
-        this.anims.create({
-            key: 'Jump',
-            frames: this.anims.generateFrameNumbers('player', { frames: [8, 9] }),
-            frameRate: 15,
-            repeat: -1
-        })
+            this.anims.create({
+                key: 'Jump',
+                frames: this.anims.generateFrameNumbers('player', { frames: [8, 9] }),
+                frameRate: 15,
+                repeat: -1
+            })
     }
-   
-    createsensors() {
-        this.powerup = new Powerup(this, 450, 400);
-        this.powerup.sprite.label = 'powerup';
-        const Bodies = Phaser.Physics.Matter.Matter.Bodies;
-        const { width: w, height: h, x: x, y: y } = this.powerup;
 
-        this.powerup.sensors = {
-            left: Bodies.rectangle(x - w + 7, y, 4, 2, { isSensor: true }),
-            right: Bodies.rectangle(x + w - 7, y, 4, 2, { isSensor: true })
-        }
-        const compoundBody = Phaser.Physics.Matter.Matter.Body.create({
-            parts: [this.powerup.sprite.body, this.powerup.sensors.left, this.powerup.sensors.right],
-            friction: 0.001
+    powerup() {
+        this.matterCollision.addOnCollideStart({
+            objectA: [this.player],
+            objectB: [this.powerup.sensor],
+            callback: this.onSensorCollide,
+            context: this
         });
-        this.powerup.sprite.setExistingBody(compoundBody);
+    }
+
+    onSensorCollide() {
+        this.player.Xforce = 100
+        console.log('hi')
     }
 
 }

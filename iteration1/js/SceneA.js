@@ -28,13 +28,11 @@ class SceneA extends BaseScene {
         this.exit = this.matter.add.sprite(450, 45, 'exit');
         this.exit.setStatic(true);
         this.exit.label = 'exit';
-
     }
 
     update(time, delta) {
       super.update(time, delta);
     }
-    
 
     makeBarrel() {
         let barrel = this.matter.add.image(400, 32, 'barrel', { restitution: 1, friction: 0.5, density: 0.01 });
