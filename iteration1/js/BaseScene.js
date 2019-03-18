@@ -6,6 +6,7 @@ class BaseScene extends Phaser.Scene {
         this.tileDataSource;
         this.barrelCount = 0;
         this.barrelTime = 0;
+        this.playerAlive = true;
     }
     preload() {
         this.load.tilemapTiledJSON(this.tileDataKey, this.tileDataSource);
@@ -32,8 +33,8 @@ class BaseScene extends Phaser.Scene {
 
         const myLand = this.matter.world.convertTilemapLayer(this.land);
         this.createPlayerAnimations();
-        this.powerup();
-        this.powerup = new Powerup(this, 450, 400);
+
+
 
         this.cameras.main.setBounds(0, 0, map.widthInpixels, map.heightInPixels);
         this.matter.world.setBounds(0, 0, map.widthInpixels, map.heightInPixels);
@@ -51,8 +52,11 @@ class BaseScene extends Phaser.Scene {
         } else if (time > this.barrelTime + 5000) {
             this.barrelTime = 0;
         }
-
-        this.player.update();
+        if (this.playerAlive = true) {
+            this.player.update();
+        } else if (this.playerAlive = false) {
+            this.player.freeze();
+        }
     }
 
     handleCollision(event) {
@@ -74,6 +78,12 @@ class BaseScene extends Phaser.Scene {
             this.changeScene();
             //console.log('ouch')
         }
+        if (myPair[0] == 'player' && myPair[2] == 'barrel') {
+            this.player.sprite.setScale(2)
+            this.playerAlive = false;
+            console.log('ouch')
+        }
+
     }
 
     changeScene() {
@@ -97,6 +107,9 @@ class BaseScene extends Phaser.Scene {
                 break
             case 'exit':
                 arr[1] = 'exit';
+                break
+            case 'barrel':
+                arr[2] = 'barrel';
                 break
         }
     }
@@ -122,18 +135,20 @@ class BaseScene extends Phaser.Scene {
             })
     }
 
-    powerup() {
+    powerupcollide() {
         this.matterCollision.addOnCollideStart({
-            objectA: [this.player],
-            objectB: [this.powerup.sensor],
+            objectA: this.player.sprite,
+            objectB: this.powerup.sprite,
             callback: this.onSensorCollide,
             context: this
         });
     }
 
     onSensorCollide() {
-        this.player.Xforce = 100
+
         console.log('hi')
+    }
+    killPlayer() {
     }
 
 }

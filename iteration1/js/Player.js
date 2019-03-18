@@ -49,66 +49,67 @@ class Player {
         }
     }
     update() {
-        if (this.keys.right.isDown) {
+            if (this.keys.right.isDown) {
 
-            this.sprite.flipX = false;
-            this.moveRight = true;
+                this.sprite.flipX = false;
+                this.moveRight = true;
 
 
-        } else if (this.keys.left.isDown) {
+            } else if (this.keys.left.isDown) {
 
-            this.sprite.flipX = true;
-            this.moveLeft = true;
+                this.sprite.flipX = true;
+                this.moveLeft = true;
+            }
+
+            if (Phaser.Input.Keyboard.JustDown(this.keys.up)) {
+                this.jumpUp = true;
+            }
+            const xForce = 0.013;
+            const yForce = 0.011;
+
+            if (this.moveRight) {
+                this.sprite.applyForce({
+                    x: xForce,
+                    y: 0.001
+                });
+            } else if (this.moveLeft) {
+                this.sprite.applyForce({
+                    x: -xForce,
+                    y: 0
+                });
+            } else {
+                this.sprite.anims.play("idle", true);
+                this.sprite.applyForce({
+                    x: 0,
+                    y: 0
+                })
+            }
+            if (this.jumpUp) {
+                this.sprite.anims.play("jump", true)
+                this.sprite.applyForce({
+                    x: 0,
+                    y: -yForce
+                });
+            }
+
+            // clamp velocity
+            const clamp = 10;
+            if (this.sprite.body.velocity.x > clamp) {
+                this.sprite.setVelocityX(clamp);
+            } else if (this.sprite.body.velocity.x < -clamp) {
+                this.sprite.setVelocityX(-clamp);
+            }
+            this.moveLeft = this.moveRight = this.jumpUp = false;
+
+            if (this.sprite.body.velocity.x > 0) {
+                this.sprite.anims.play('walk', true);
+                this.sprite.flipX = false;
+            } else if (this.sprite.body.velocity.x < 0) {
+                this.sprite.anims.play('walk', true);
+                this.sprite.flipX = true;
+            }
         }
-
-        if (Phaser.Input.Keyboard.JustDown(this.keys.up)) {
-            this.jumpUp = true;
-        }
-        const xForce = 0.013;
-        const yForce = 0.011;
-
-        if (this.moveRight) {
-            this.sprite.applyForce({
-                x: xForce,
-                y: 0.001
-            });
-        } else if (this.moveLeft) {
-            this.sprite.applyForce({
-                x: -xForce,
-                y: 0
-            });
-        } else {
-            this.sprite.anims.play("idle", true);
-            this.sprite.applyForce({
-                x: 0,
-                y: 0
-            })
-        }
-        if (this.jumpUp) {
-            this.sprite.anims.play("jump", true)
-            this.sprite.applyForce({
-                x: 0,
-                y: -yForce
-            });
-        }
-
-        // clamp velocity
-        const clamp = 10;
-        if (this.sprite.body.velocity.x > clamp) {
-            this.sprite.setVelocityX(clamp);
-        } else if (this.sprite.body.velocity.x < -clamp) {
-            this.sprite.setVelocityX(-clamp);
-        }
-        this.moveLeft = this.moveRight = this.jumpUp = false;
-
-        if (this.sprite.body.velocity.x > 0) {
-            this.sprite.anims.play('walk', true);
-            this.sprite.flipX = false;
-        } else if (this.sprite.body.velocity.x < 0) {
-            this.sprite.anims.play('walk', true);
-            this.sprite.flipX = true;
-        }
-    }
+    
 
 
 freeze() {

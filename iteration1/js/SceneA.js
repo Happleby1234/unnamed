@@ -25,6 +25,9 @@ class SceneA extends BaseScene {
         this.player = new Player(this, 200, 500);
         this.player.sprite.label = 'player'
 
+        this.powerup = new Powerup(this, 450, 400);
+        this.powerupcollide();
+
         this.exit = this.matter.add.sprite(450, 45, 'exit');
         this.exit.setStatic(true);
         this.exit.label = 'exit';
@@ -41,6 +44,7 @@ class SceneA extends BaseScene {
             type: 'circle',
             radius: 10
         });
+        barrel.label='barrel'
     }
 
 }
