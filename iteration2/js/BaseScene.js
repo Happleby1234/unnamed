@@ -6,7 +6,7 @@ class BaseScene extends Phaser.Scene {
         this.tileDataSource;
         this.barrelCount = 0;
         this.barrelTime = 0;
-        this.playerLives = 3;
+        Player.playerLives = 1;
     }
     preload() {
         this.load.tilemapTiledJSON(this.tileDataKey, this.tileDataSource);
@@ -33,7 +33,6 @@ class BaseScene extends Phaser.Scene {
 
         const myLand = this.matter.world.convertTilemapLayer(this.land);
         this.createPlayerAnimations();
-
 
 
         this.cameras.main.setBounds(0, 0, map.widthInpixels, map.heightInPixels);
@@ -76,10 +75,8 @@ class BaseScene extends Phaser.Scene {
         }
         if (myPair[0] == 'player' && myPair[2] == 'barrel') {
             this.player.sprite.setScale(2)
-            this.cameras.main.shake(200, 0.005);
-            this.playerLives--;
-            //this.death();    <-- (this was a test of my death screen)
-            console.log('ouch')
+            this.killPlayer();
+            this.restart();
         }
 
     }
@@ -143,11 +140,14 @@ class BaseScene extends Phaser.Scene {
     }
 
     onSensorCollide() {
-
+        Player.playerLives ++;
         console.log('hi')
     }
     killPlayer() {
-        if (playerLives === 0) {
+        Player.playerLives--;
+        this.cameras.main.shake(200, 0.005);
+        console.log('ouch')
+        if (Player.playerLives < 1) {
             this.death();
         }
     }
@@ -158,5 +158,11 @@ class BaseScene extends Phaser.Scene {
                 break
         }
     }
-    
+    restart() {
+        switch (this.id) {
+            case 'SceneA':
+                this.scene.start('SceneA')
+                break
+        }
+    }
 }

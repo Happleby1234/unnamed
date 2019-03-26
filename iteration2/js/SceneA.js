@@ -3,7 +3,7 @@ class SceneA extends BaseScene {
       super('SceneA');
       this.tileDataKey = 'castle';
         this.tileDataSource = 'assets/level1.json';
-        var button
+
     }
 
     preload() {

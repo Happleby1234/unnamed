@@ -23,7 +23,6 @@ class Player {
         this.scene.input.on('pointerup', this.handlePointerUp, this);
         this.isTouching = false;
         this.touchData = {};
-        this.playerLives = 3;
 
         //console.log(this);
     }

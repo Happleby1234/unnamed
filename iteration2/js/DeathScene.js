@@ -15,7 +15,8 @@ class DeathScene extends BaseScene {
         startButton.y -= startButton.height / 2;
         startButton.setInteractive();
         startButton.on('pointerdown', function () {
-            this.scene.start('MainMenu');
+            this.scene.restart('SceneA')
+            this.scene.start('SceneA');
         }, this);
     }
 
