@@ -17,6 +17,7 @@ class DeathScene extends BaseScene {
         startButton.on('pointerdown', function () {
             playerLives = 1;
             this.scene.start('SceneA');
+            
         }, this);
     }
 

@@ -43,6 +43,7 @@ class BaseScene extends Phaser.Scene {
         const myLand = this.matter.world.convertTilemapLayer(this.land);
         this.createPlayerAnimations();
 
+        lifeCounter = this.add.text(16, 10, 'Lives: ' + playerLives, { fontSize: '32px', fill: '#FFFFFF' }).setScrollFactor(0);
 
         this.cameras.main.setBounds(0, 0, map.widthInpixels, map.heightInPixels);
         this.matter.world.setBounds(0, 0, map.widthInpixels, map.heightInPixels);
@@ -153,7 +154,7 @@ class BaseScene extends Phaser.Scene {
 
     onSensorCollide() {
         playerLives++;
-        console.log('hi')
+        lifeCounter.setText('Lives: ' + playerLives);
     }
     killPlayer() {
         playerLives--;
@@ -164,10 +165,13 @@ class BaseScene extends Phaser.Scene {
         }
     }
     death() {
-        this.scene.start('DeathScene')
+        this.scene.stop(this.id);
+        this.scene.start('DeathScene');
+
 
     }
     restart() {
         this.scene.restart(this.id);
+        this.scene.stop('SceneA');
     }
 }

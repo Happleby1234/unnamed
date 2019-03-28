@@ -35,3 +35,4 @@ var config = {
 
 var game = new Phaser.Game(config);
 var playerLives = 1;
+var lifeCounter;
