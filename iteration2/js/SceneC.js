@@ -1,8 +1,8 @@
-class SceneB extends BaseScene {
+class SceneC extends BaseScene {
     constructor() {
-        super('SceneB');
-        this.tileDataKey = 'castle2';
-        this.tileDataSource = 'assets/level2castle.json';
+        super('SceneC');
+        this.tileDataKey = 'castle3';
+        this.tileDataSource = 'assets/level3.json';
     }
 
     preload() {
@@ -16,13 +16,13 @@ class SceneB extends BaseScene {
         this.player.sprite.label = 'player'
 
 
-        this.exit = this.matter.add.sprite(275, 60, 'exit');
+        this.exit = this.matter.add.sprite(260, 50, 'exit');
         this.exit.setStatic(true);
         this.exit.label = 'exit';
 
 
         this.cameras.main.startFollow(this.player.sprite, false, 0.5);
-        this.cameras.main.setBounds(0, 0, 500, 1030);
+       this.cameras.main.setBounds(0, 0, 500, 1030);
 
     }
 
@@ -30,7 +30,7 @@ class SceneB extends BaseScene {
         super.update(time, delta)
     }
     makeBarrel() {
-        let barrel = this.matter.add.image(400, 32, 'barrel', { restitution: 1, friction: 0.5, density: 0.01 });
+        let barrel = this.matter.add.image(350, 90, 'barrel', { restitution: 1, friction: 0.5, density: 0.01 });
         //barrel.setScale(1);
         barrel.setBody({
             type: 'circle',

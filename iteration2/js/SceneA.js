@@ -1,23 +1,13 @@
 class SceneA extends BaseScene {
-    constructor(){
-      super('SceneA');
-      this.tileDataKey = 'castle';
+    constructor() {
+        super('SceneA');
+        this.tileDataKey = 'castle';
         this.tileDataSource = 'assets/level1.json';
 
     }
 
     preload() {
         super.preload();
-
-        this.load.spritesheet(
-            'player',
-            'assets/player.png', {
-                frameWidth: 14,
-                frameHeight: 14,
-                margin: 1,
-                spacing: 2
-            }
-        );
     }
 
     create() {
@@ -34,7 +24,7 @@ class SceneA extends BaseScene {
     }
 
     update(time, delta) {
-      super.update(time, delta);
+        super.update(time, delta);
     }
 
     makeBarrel() {
@@ -44,7 +34,7 @@ class SceneA extends BaseScene {
             type: 'circle',
             radius: 10
         });
-        barrel.label='barrel'
+        barrel.label = 'barrel'
     }
 
 }

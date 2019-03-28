@@ -6,7 +6,7 @@ class BaseScene extends Phaser.Scene {
         this.tileDataSource;
         this.barrelCount = 0;
         this.barrelTime = 0;
-        Player.playerLives = 1;
+        //Player.playerLives = 1;
     }
     preload() {
         this.load.tilemapTiledJSON(this.tileDataKey, this.tileDataSource);
@@ -16,6 +16,15 @@ class BaseScene extends Phaser.Scene {
         this.load.image('exit', 'assets/donkeybrad.png');
         this.load.image('barrel', 'assets/barrel.png');
         this.load.image('Powerup', 'assets/powerup.png');
+        this.load.spritesheet(
+            'player',
+            'assets/player.png', {
+                frameWidth: 14,
+                frameHeight: 14,
+                margin: 1,
+                spacing: 2
+            }
+        );
     }
     create() {
         //load level
@@ -90,6 +99,9 @@ class BaseScene extends Phaser.Scene {
                 this.scene.start('SceneB');
                 break
             case 'SceneB':
+                this.scene.start('SceneC');
+                break
+            case 'SceneC':
                 this.scene.start('SceneA');
                 break
         }
@@ -140,29 +152,22 @@ class BaseScene extends Phaser.Scene {
     }
 
     onSensorCollide() {
-        Player.playerLives ++;
+        playerLives++;
         console.log('hi')
     }
     killPlayer() {
-        Player.playerLives--;
+        playerLives--;
         this.cameras.main.shake(200, 0.005);
         console.log('ouch')
-        if (Player.playerLives < 1) {
+        if (playerLives <= 0) {
             this.death();
         }
     }
     death() {
-        switch (this.id) {
-            case 'SceneA':
-                this.scene.start('DeathScene')
-                break
-        }
+        this.scene.start('DeathScene')
+
     }
     restart() {
-        switch (this.id) {
-            case 'SceneA':
-                this.scene.start('SceneA')
-                break
-        }
+        this.scene.restart(this.id);
     }
 }
