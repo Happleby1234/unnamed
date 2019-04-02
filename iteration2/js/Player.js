@@ -113,16 +113,5 @@ class Player {
             }
         }
 
-    
-
-
-
-
-
-
-    destroy() {
-        if (playerLives === 0) {
-            this.scene.start('MainMenu')
-        }
-    }
+   
 }

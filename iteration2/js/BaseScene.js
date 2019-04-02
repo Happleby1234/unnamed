@@ -62,6 +62,7 @@ class BaseScene extends Phaser.Scene {
         leftButton.y -= leftButton.height / 1;
         leftButton.setInteractive();
         leftButton.on('pointerdown', this.playerMoveLeft,this)
+        leftButton.on('pointerup', this.playerStopMove, this)
 
         var rightButton = this.add.image(game.config.width / 4, game.config.height / 1.3, 'right')
         rightButton.setDepth(2);
@@ -69,6 +70,7 @@ class BaseScene extends Phaser.Scene {
         rightButton.y -= rightButton.height / 1;
         rightButton.setInteractive();
         rightButton.on('pointerdown', this.playerMoveRight, this)
+        rightButton.on('pointerup', this.playerStopMove, this)
     }
     update(time, delta) {
 
@@ -87,6 +89,10 @@ class BaseScene extends Phaser.Scene {
     }
     playerMoveRight() {
         this.player.moveRight = true
+    }
+    playerStopMove() {
+        this.player.moveLeft = false
+        this.player.moveRight = false
     }
 
     handleCollision(event) {
