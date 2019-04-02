@@ -1,6 +1,9 @@
 class Player {
     constructor(scene, x, y) {
         this.scene = scene;
+        this.moveLeft = false;
+        this.moveRight = false;
+        this.jumpUp = false;
         this.sprite = scene.matter.add
             .sprite(0, 0, "player", 0)
             .setBody({
@@ -19,8 +22,8 @@ class Player {
             right: Phaser.Input.Keyboard.KeyCodes.D
         });
         //touchscreen stuff
-        this.scene.input.on('pointerdown', this.handlePointerDown, this);
-        this.scene.input.on('pointerup', this.handlePointerUp, this);
+        //this.scene.input.on('pointerdown', this.handlePointerDown, this);
+        //this.scene.input.on('pointerup', this.handlePointerUp, this);
         this.isTouching = false;
         this.touchData = {};
 
@@ -64,7 +67,7 @@ class Player {
             if (Phaser.Input.Keyboard.JustDown(this.keys.up)) {
                 this.jumpUp = true;
             }
-            const xForce = 0.013;
+            const xForce = 0.03;
             const yForce = 0.011;
 
             if (this.moveRight) {
@@ -99,7 +102,7 @@ class Player {
             } else if (this.sprite.body.velocity.x < -clamp) {
                 this.sprite.setVelocityX(-clamp);
             }
-            this.moveLeft = this.moveRight = this.jumpUp = false;
+           //this.moveLeft = this.moveRight = this.jumpUp = false;
 
             if (this.sprite.body.velocity.x > 0) {
                 this.sprite.anims.play('walk', true);
@@ -109,15 +112,13 @@ class Player {
                 this.sprite.flipX = true;
             }
         }
+
     
 
 
-freeze() {
-    this.sprite.setStatic(true);
-}
 
 
-//***ANIMATION***//
+
 
     destroy() {
         if (playerLives === 0) {

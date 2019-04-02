@@ -6,6 +6,7 @@ class BaseScene extends Phaser.Scene {
         this.tileDataSource;
         this.barrelCount = 0;
         this.barrelTime = 0;
+        this.player;
         //Player.playerLives = 1;
     }
     preload() {
@@ -17,6 +18,7 @@ class BaseScene extends Phaser.Scene {
         this.load.image('barrel', 'assets/barrel.png');
         this.load.image('Powerup', 'assets/powerup.png');
         this.load.image('left', 'assets/left.png');
+        this.load.image('right', 'assets/right.png');
         this.load.spritesheet(
             'player',
             'assets/player.png', {
@@ -53,16 +55,20 @@ class BaseScene extends Phaser.Scene {
         this.matter.world.on('collisionactive', this.handleCollision, this);
         //console.log(this);
 
-        /*
-        var leftButton = this.add.image(game.config.width / 2, game.config.width / 1.4, 'left')
-        leftButton.setDepth(2);
-        leftButton.x -= startButton.width / 2;
-        leftButton.y -= startButton.height / 2;
-        leftButton.setInteractive();
-        leftButton.on('pointerdown', function () {
-        }, this);
-        */
 
+        var leftButton = this.add.image(game.config.width / 7, game.config.height / 1.3, 'left')
+        leftButton.setDepth(2);
+        leftButton.x -= leftButton.width / 1;
+        leftButton.y -= leftButton.height / 1;
+        leftButton.setInteractive();
+        leftButton.on('pointerdown', this.playerMoveLeft,this)
+
+        var rightButton = this.add.image(game.config.width / 4, game.config.height / 1.3, 'right')
+        rightButton.setDepth(2);
+        rightButton.x -= rightButton.width / 1;
+        rightButton.y -= rightButton.height / 1;
+        rightButton.setInteractive();
+        rightButton.on('pointerdown', this.playerMoveRight, this)
     }
     update(time, delta) {
 
@@ -74,6 +80,13 @@ class BaseScene extends Phaser.Scene {
             this.barrelTime = 0;
         }
         this.player.update();
+    }
+
+    playerMoveLeft() {
+        this.player.moveLeft = true
+    }
+    playerMoveRight() {
+        this.player.moveRight = true
     }
 
     handleCollision(event) {
@@ -96,6 +109,7 @@ class BaseScene extends Phaser.Scene {
             //console.log('ouch')
         }
         if (myPair[0] == 'player' && myPair[2] == 'barrel') {
+            this.track('Hit by barrel')
             this.player.sprite.setScale(2)
             this.killPlayer();
             this.restart();
@@ -177,6 +191,7 @@ class BaseScene extends Phaser.Scene {
         }
     }
     death() {
+        this.track('death', 'playerLives', playerLives)
         this.scene.stop(this.id);
         this.scene.start('DeathScene', { previousScene: this.id });
 
@@ -184,5 +199,15 @@ class BaseScene extends Phaser.Scene {
     }
     restart() {
         this.scene.restart(this.id);
+    }
+
+    track(action, label, value) {
+        var str = 'event tracking:action =' + action + 'label = ' + label + 'value=' + value;
+        console.log(str)
+        gtag('event', action, {
+            'event_category': 'Donkey Dong',
+            'event_label': label,
+            'value': value
+        });
     }
 }
