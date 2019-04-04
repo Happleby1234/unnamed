@@ -1,4 +1,7 @@
 class DeathScene extends BaseScene {
+    init(data) {
+        this.previousScene = data.previousScene;
+    }
     constructor() {
         super('DeathScene');
     }
@@ -16,7 +19,7 @@ class DeathScene extends BaseScene {
         startButton.setInteractive();
         startButton.on('pointerdown', function () {
             playerLives = 1;
-            this.scene.start('SceneA');
+            this.scene.start(this.previousScene);
             
         }, this);
     }

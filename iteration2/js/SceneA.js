@@ -3,7 +3,6 @@ class SceneA extends BaseScene {
         super('SceneA');
         this.tileDataKey = 'castle';
         this.tileDataSource = 'assets/level1.json';
-        this.shader = 'Greyscale';
 
     }
 
@@ -19,16 +18,6 @@ class SceneA extends BaseScene {
         this.powerup = new Powerup(this, 450, 400);
         this.powerupcollide();
 
-
-        this.pipeTick = 0.0;
-
-        this.pipeline = this.game.renderer.addPipeline(this.shader, new PulseRed(this.game));
-
-        this.input.on('pointerdown', function () {
-            this.player.sprite.setPipeline(this.shader);
-            //this.cameras.main.setRenderToTexture(this.shader);
-        }, this);
-
         this.exit = this.matter.add.sprite(450, 45, 'exit');
         this.exit.setStatic(true);
         this.exit.label = 'exit';
@@ -36,10 +25,6 @@ class SceneA extends BaseScene {
 
     update(time, delta) {
         super.update(time, delta);
-
-        this.pipeline.setFloat1('uTime', this.pipeTick); //A tickrate that increases by 0.01 per frame. Could also use update's own time parameter.
-        this.pipeTick += 0.01;
-
     }
 
     makeBarrel() {
